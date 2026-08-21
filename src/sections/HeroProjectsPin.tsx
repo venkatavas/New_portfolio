@@ -97,14 +97,19 @@ export function HeroProjectsPin() {
           start: 'top top',
           end: 'bottom bottom',
           scrub: 0.6,
-          onUpdate: (self) => syncStepToProgress(self.progress),
-          // onUpdate only fires while progress is changing inside [start,
-          // end] — once the user scrolls past the trigger entirely it goes
-          // quiet, which would leave the fixed progress readout stuck
-          // showing "03 / 03" for the rest of the page. onLeave fires right
-          // at that boundary regardless; onEnterBack/onEnter re-sync from
-          // the real progress instead of assuming re-entry always lands
-          // near one end (a jump/fast scroll can land anywhere).
+          // Gated on self.isActive: with scrub enabled, the tween keeps
+          // smoothly "catching up" to the real scroll position for a
+          // moment even after scrolling past the trigger's end — onUpdate
+          // keeps firing during that catch-up, racing with onLeave below.
+          // Without this guard, a late onUpdate (still reporting
+          // progress≈1 from the catch-up) would call syncStepToProgress
+          // AFTER onLeave already reset to -1, re-setting a real step and
+          // permanently un-hiding the progress readout for the rest of the
+          // page — confirmed via real scroll input, not a synthetic-test
+          // artifact.
+          onUpdate: (self) => {
+            if (self.isActive) syncStepToProgress(self.progress)
+          },
           onLeave: () => {
             activeStepRef.current = -1
             setActiveStep(-1)

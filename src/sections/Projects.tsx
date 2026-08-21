@@ -21,7 +21,7 @@ export function Projects() {
     <section id="projects" className="section container projects">
       <header className="projects__header">
         <div className="projects__title-row">
-          <span className="eyebrow projects__index">02</span>
+          <span className="eyebrow projects__index">01</span>
           <a
             className="projects__all-link"
             href={links.github.url}

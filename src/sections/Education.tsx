@@ -61,7 +61,7 @@ export function Education() {
   return (
     <section id="education" className="section container education">
       <header className="education__header">
-        <span className="eyebrow education__index">04</span>
+        <span className="eyebrow education__index">05</span>
         <div className="education__heading-row">
           <RevealText as="h2" className="education__title">
             Education

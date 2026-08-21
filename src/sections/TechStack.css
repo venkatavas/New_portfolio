@@ -424,7 +424,7 @@
 
 @media (min-width: 640px) {
   .stack__categories {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .stack__category-head {
@@ -434,13 +434,19 @@
 
 @media (min-width: 900px) {
   .stack__categories {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 1180px) {
   .stack__categories {
-    grid-template-columns: repeat(5, 1fr);
+    /* minmax(0, 1fr), not bare 1fr — without the 0 floor, a column's
+       content (a long tag label like "Spring Data JPA") can force that
+       track wider than its fair share, overflowing this grid past the
+       middle column of .stack__body and visually overlapping the "Where
+       I use them" sidebar next to it. Confirmed at 1280px width, a common
+       laptop size. */
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: var(--space-5);
   }
 
