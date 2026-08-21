@@ -1,0 +1,31 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: clamp(6rem, 5rem + 3vh, 8rem) var(--container-padding-x) var(--space-8);
+}
+
+.hero [data-hero-panel],
+.hero [data-hero-name],
+.hero [data-hero-identity],
+.hero [data-hero-module],
+.hero [data-hero-scroll] {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+:root[data-reduced-motion] .hero [data-hero-panel],
+:root[data-reduced-motion] .hero [data-hero-name],
+:root[data-reduced-motion] .hero [data-hero-identity],
+:root[data-reduced-motion] .hero [data-hero-module],
+:root[data-reduced-motion] .hero [data-hero-scroll] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding-block: clamp(5.5rem, 5rem + 2vh, 7rem) var(--space-6);
+  }
+}

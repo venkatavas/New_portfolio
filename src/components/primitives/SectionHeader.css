@@ -1,0 +1,19 @@
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+  max-width: 46rem;
+}
+
+.section-header__title {
+  display: block;
+  font-size: var(--font-size-2xl);
+}
+
+.section-header__description {
+  color: var(--color-fg-muted);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-relaxed);
+  max-width: 38rem;
+}

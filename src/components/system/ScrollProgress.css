@@ -1,0 +1,25 @@
+.scroll-rail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100vh;
+  background: var(--color-border);
+  z-index: var(--z-nav);
+  pointer-events: none;
+  display: none;
+}
+
+@media (min-width: 860px) {
+  .scroll-rail {
+    display: block;
+  }
+}
+
+.scroll-rail__fill {
+  width: 100%;
+  height: 100%;
+  background: var(--color-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+}

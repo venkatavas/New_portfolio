@@ -1,0 +1,414 @@
+.hi {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 1.6vh, 1.75rem);
+}
+
+.hi__panel {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 14px var(--space-4);
+  background: color-mix(in srgb, var(--color-bg-elevated) 55%, transparent);
+}
+
+/* ---------- top panels ---------- */
+
+.hi__panels {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+.hi__panel--status {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.hi__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--color-fg);
+}
+
+.hi__status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #7fd88f;
+  animation: hi-status-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes hi-status-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(127 216 143 / 0.45);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgb(127 216 143 / 0);
+  }
+}
+
+.hi__status-tags {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-top: auto;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  /* --color-fg-faint fails WCAG AA contrast at this size on mobile widths
+     — same fix already applied to the Preloader's corner labels. */
+  color: var(--color-fg-muted);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.hi__status-tags span {
+  padding: 2px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+}
+
+.hi__panel--positioning {
+  display: flex;
+  align-items: center;
+}
+
+.hi__positioning {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-fg-muted);
+}
+
+.hi__accent-word {
+  color: var(--color-accent);
+}
+
+.hi__panel--files {
+  display: none;
+}
+
+.hi__file-tree {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-fg-muted);
+}
+
+.hi__file-row {
+  transition: color var(--duration-fast) var(--ease-out-quart);
+}
+
+.hi__file-row--nested {
+  padding-left: var(--space-4);
+}
+
+.hi__file-row.is-active,
+.hi__file-row:hover {
+  color: var(--color-accent);
+}
+
+/* ---------- name ---------- */
+
+.hi__name {
+  position: relative;
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 1rem + 5.5vw, 5rem);
+  line-height: 0.96;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+.hi__name-base,
+.hi__name-sweep {
+  display: block;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Calm resting state: a brushed-steel texture (banded grays) that drifts
+   slowly, so the name reads as machined metal even before the cursor
+   touches it — not just a single soft highlight pass. */
+.hi__name-base {
+  background-image: repeating-linear-gradient(
+    112deg,
+    #4d4d4d 0px,
+    #8f8f8f 3px,
+    #f5f5f5 6px,
+    #6b6b6b 9px,
+    #d9d9d9 12px,
+    #3d3d3d 15px,
+    #bdbdbd 18px
+  );
+  background-position: 0 0;
+  animation: hi-name-sweep 14s ease-in-out infinite;
+}
+
+@keyframes hi-name-sweep {
+  0%,
+  100% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 90px 0;
+  }
+}
+
+/* Brighter cursor-tracked highlight, only surfaced on hover — this is the
+   "cursor passes -> metallic light sweep" moment. Fixed attachment keeps the
+   gradient's origin in viewport space so it tracks the real cursor position
+   even though it's clipped to text. */
+.hi__name-sweep {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background-image: radial-gradient(
+    320px circle at var(--mouse-x) var(--mouse-y),
+    #ffffff,
+    var(--color-fg) 45%,
+    transparent 70%
+  );
+  background-attachment: fixed;
+  transition: opacity var(--duration-base) var(--ease-out-quart);
+}
+
+.hi__name:hover .hi__name-sweep {
+  opacity: 0.85;
+}
+
+:root[data-reduced-motion] .hi__name-base {
+  animation: none;
+  background-position: 35% 50%;
+}
+
+:root[data-reduced-motion] .hi__name-sweep {
+  display: none;
+}
+
+/* ---------- identity row ---------- */
+
+.hi__identity {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  align-items: center;
+  text-align: center;
+  padding-block: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.hi__identity-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.hi__clock-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.live-clock {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-lg);
+  color: var(--color-fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.live-clock__meridiem {
+  font-size: var(--font-size-xs);
+  color: var(--color-fg-muted);
+  margin-left: 4px;
+}
+
+.hi__tz {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-fg-muted);
+}
+
+.hi__identity-desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-fg-muted);
+  line-height: var(--line-height-relaxed);
+  max-width: 52ch;
+}
+
+.hi__role {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--color-fg);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.hi__availability {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-accent);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+/* ---------- lower modules ---------- */
+
+.hi__modules {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+.hi__module--about,
+.hi__module--flow,
+.hi__module--stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.hi__module--about p {
+  font-size: var(--font-size-sm);
+  color: var(--color-fg-muted);
+  line-height: var(--line-height-relaxed);
+}
+
+.hi__module-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-fg);
+  margin-top: auto;
+  transition:
+    color var(--duration-fast) var(--ease-out-quart),
+    gap var(--duration-fast) var(--ease-out-quart);
+}
+
+.hi__module-link:hover {
+  color: var(--color-accent);
+  gap: var(--space-3);
+}
+
+.hi__stack-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* ---------- scroll indicator ---------- */
+
+.hi__scroll {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
+
+.hi__scroll-icon {
+  width: 16px;
+  height: 26px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  display: flex;
+  justify-content: center;
+  padding-top: 5px;
+  flex-shrink: 0;
+}
+
+.hi__scroll-dot {
+  width: 3px;
+  height: 5px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  animation: hi-scroll-bob 1.8s ease-in-out infinite;
+}
+
+@keyframes hi-scroll-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(7px);
+    opacity: 0.4;
+  }
+}
+
+:root[data-reduced-motion] .hi__scroll-dot,
+:root[data-reduced-motion] .hi__status-dot {
+  animation: none;
+}
+
+/* ---------- responsive ---------- */
+
+@media (min-width: 768px) {
+  .hi__panels {
+    grid-template-columns: 1fr 1.4fr 1fr;
+    gap: var(--space-5);
+  }
+
+  .hi__panel--files {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .hi__panel--positioning {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .hi__positioning {
+    max-width: 30ch;
+    margin-inline: auto;
+  }
+
+  .hi__identity {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .hi__identity-col {
+    align-items: flex-start;
+  }
+
+  .hi__identity-col--right {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .hi__identity-desc {
+    text-align: center;
+    margin-inline: var(--space-6);
+  }
+
+  .hi__modules {
+    grid-template-columns: 1fr 1.2fr 1fr;
+    gap: var(--space-5);
+  }
+}

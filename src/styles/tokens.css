@@ -1,0 +1,96 @@
+:root {
+  /* ---------- color ---------- */
+  --color-bg: #0b0b0c;
+  --color-bg-elevated: #141415;
+  --color-bg-elevated-2: #1b1b1d;
+  --color-border: #242426;
+  --color-border-strong: #333335;
+  --color-fg: #f5f3ee;
+  --color-fg-muted: #8c8a85;
+  --color-fg-faint: #57564f;
+  --color-accent: #d3a24c;
+  --color-accent-fg: #0b0b0c;
+  --color-accent-soft: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  --color-accent-border: color-mix(in srgb, var(--color-accent) 40%, transparent);
+  --color-accent-hover: color-mix(in srgb, var(--color-accent) 85%, white);
+
+  /* ---------- typography ---------- */
+  --font-display: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-md: clamp(1.125rem, 1.05rem + 0.35vw, 1.375rem);
+  --font-size-lg: clamp(1.375rem, 1.2rem + 0.8vw, 1.875rem);
+  --font-size-xl: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
+  --font-size-2xl: clamp(2.25rem, 1.7rem + 2.6vw, 3.75rem);
+  --font-size-3xl: clamp(2.75rem, 1.9rem + 4vw, 5.25rem);
+  --font-size-hero: clamp(2rem, 0.8rem + 6.5vw, 6.5rem);
+
+  --line-height-tight: 1.02;
+  --line-height-snug: 1.15;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.7;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.06em;
+  --tracking-widest: 0.18em;
+
+  /* ---------- spacing (8px base) ---------- */
+  --space-1: 0.25rem;   /* 4px  */
+  --space-2: 0.5rem;    /* 8px  */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.5rem;    /* 24px */
+  --space-6: 2rem;      /* 32px */
+  --space-7: 3rem;      /* 48px */
+  --space-8: 4rem;      /* 64px */
+  --space-9: 6rem;      /* 96px */
+  --space-10: 8rem;     /* 128px */
+  --space-11: 12rem;    /* 192px */
+
+  --section-padding-y: clamp(3.25rem, 2.5rem + 3.5vw, 6.5rem);
+  --container-padding-x: clamp(1.25rem, 0.7rem + 2.5vw, 4rem);
+  --container-max: 1440px;
+
+  /* ---------- shape ---------- */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-pill: 999px;
+
+  /* ---------- elevation ---------- */
+  --shadow-hover: 0 12px 32px -16px rgb(0 0 0 / 0.5);
+
+  /* ---------- motion ---------- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --duration-instant: 120ms;
+  --duration-fast: 220ms;
+  --duration-base: 480ms;
+  --duration-slow: 800ms;
+
+  /* ---------- z-index ---------- */
+  --z-background: 0;
+  --z-content: 10;
+  --z-nav: 50;
+  --z-overlay: 90;
+  --z-preloader: 95;
+  --z-cursor: 100;
+
+  /* ---------- cursor (JS-driven) ---------- */
+  --mouse-x: 50vw;
+  --mouse-y: 50vh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-instant: 0ms;
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+  }
+}

@@ -1,0 +1,127 @@
+.flow-viz {
+  position: relative;
+  padding-block: var(--space-2);
+}
+
+.flow-viz__line {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 50%;
+  width: 1px;
+  background: var(--color-border-strong);
+}
+
+.flow-viz__packet {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 5px;
+  height: 5px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 10px 1px color-mix(in srgb, var(--color-accent) 70%, transparent);
+  animation-name: flow-packet;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+/* One round trip per cycle: request travels down (0-38%), a brief pause at
+   the database (processing), then a dimmer response returns upward. */
+@keyframes flow-packet {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  38% {
+    top: 100%;
+    opacity: 1;
+  }
+  46% {
+    top: 100%;
+    opacity: 0.25;
+  }
+  54% {
+    top: 100%;
+    opacity: 0.7;
+  }
+  90% {
+    top: 0%;
+    opacity: 0.55;
+  }
+  100% {
+    top: 0%;
+    opacity: 0;
+  }
+}
+
+.flow-viz__nodes {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.flow-viz__node {
+  position: relative;
+  height: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.flow-viz__node-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-bg);
+  animation-name: flow-node-pulse;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: var(--flow-delay, 0s);
+  transition: border-color var(--duration-fast) var(--ease-out-quart);
+}
+
+@keyframes flow-node-pulse {
+  0%,
+  85%,
+  100% {
+    border-color: var(--color-border-strong);
+    box-shadow: none;
+  }
+  4%,
+  8% {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 8px 1px color-mix(in srgb, var(--color-accent) 55%, transparent);
+  }
+}
+
+.flow-viz__node-label {
+  margin-left: calc(50% + var(--space-4));
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-fg-muted);
+  transition: color var(--duration-fast) var(--ease-out-quart);
+}
+
+.flow-viz__node.is-hovered .flow-viz__node-dot {
+  border-color: var(--color-accent);
+}
+
+.flow-viz__node.is-hovered .flow-viz__node-label {
+  color: var(--color-fg);
+}
+
+:root[data-reduced-motion] .flow-viz__packet,
+:root[data-reduced-motion] .flow-viz__node-dot {
+  animation: none;
+}

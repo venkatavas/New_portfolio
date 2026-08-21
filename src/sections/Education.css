@@ -1,0 +1,206 @@
+.education__header {
+  margin-bottom: var(--space-8);
+}
+
+.education__index {
+  display: block;
+  color: var(--color-accent);
+  margin-bottom: var(--space-4);
+}
+
+.education__heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.education__title {
+  display: block;
+  font-size: var(--font-size-2xl);
+  text-transform: uppercase;
+}
+
+.education__description {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: 30ch;
+  color: var(--color-fg-muted);
+  font-size: var(--font-size-sm);
+}
+
+.education__description-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--color-accent);
+  flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .education__description {
+    text-align: right;
+    justify-content: flex-end;
+  }
+}
+
+/* Small root-node → two-branch device tying "Foundation" to the school and
+   leadership cards below it — only makes sense once they sit side by side. */
+.education__connector {
+  display: none;
+}
+
+@media (min-width: 800px) {
+  .education__connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+  }
+}
+
+.education__connector-label {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
+
+.education__connector-svg {
+  width: 100%;
+  max-width: 320px;
+  height: 44px;
+}
+
+.education__connector-node {
+  fill: var(--color-bg);
+  stroke: var(--color-border-strong);
+  stroke-width: 1;
+}
+
+.education__connector-line {
+  stroke: var(--color-border-strong);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+}
+
+:root[data-reduced-motion] .education__connector-line,
+:root[data-reduced-motion] .education__connector-node {
+  opacity: 1;
+}
+
+.education__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+
+@media (min-width: 800px) {
+  .education__grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+.education__card {
+  display: flex;
+  gap: var(--space-5);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-bg-elevated) 40%, transparent);
+  transition:
+    border-color var(--duration-fast) var(--ease-out-quart),
+    background-color var(--duration-fast) var(--ease-out-quart),
+    transform var(--duration-fast) var(--ease-out-quart);
+}
+
+.education__card:hover {
+  border-color: var(--color-accent-border);
+  background: color-mix(in srgb, var(--color-bg-elevated) 65%, transparent);
+  transform: translateY(-2px);
+}
+
+.education__icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  color: var(--color-accent);
+}
+
+.education__card-body {
+  min-width: 0;
+}
+
+.education__school {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--font-size-md);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--line-height-snug);
+  color: var(--color-fg);
+}
+
+.education__degree {
+  margin-top: var(--space-2);
+  color: var(--color-accent);
+  font-size: var(--font-size-sm);
+}
+
+.education__meta {
+  margin-top: var(--space-4);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-fg-muted);
+  letter-spacing: var(--tracking-wide);
+}
+
+.education__card-label {
+  display: block;
+  margin-bottom: var(--space-4);
+}
+
+.education__leadership {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.education__leadership li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  color: var(--color-fg-muted);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+}
+
+.education__leadership li svg {
+  flex-shrink: 0;
+  margin-top: 0.4em;
+  color: var(--color-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .education__card {
+    transition: none;
+  }
+
+  .education__card:hover {
+    transform: none;
+  }
+}

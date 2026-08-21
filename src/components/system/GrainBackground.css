@@ -1,0 +1,58 @@
+.grain-background {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-background);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.grain-background__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    520px circle at var(--mouse-x) var(--mouse-y),
+    color-mix(in srgb, var(--color-accent) 9%, transparent),
+    transparent 70%
+  );
+}
+
+.grain-background__grid {
+  position: absolute;
+  inset: -1px;
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-fg) 6%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-fg) 6%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 64px 64px;
+  mask-image: radial-gradient(120% 80% at 50% 0%, black 40%, transparent 100%);
+  animation: grid-drift 120s linear infinite;
+}
+
+:root[data-reduced-motion] .grain-background__grid {
+  animation: none;
+}
+
+@keyframes grid-drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 640px 640px;
+  }
+}
+
+.grain-background__noise {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+  background-size: 128px 128px;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+}

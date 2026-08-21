@@ -1,0 +1,207 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-nav);
+  padding: var(--space-4) var(--container-padding-x);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--space-4);
+  opacity: 0;
+  transform: translateY(-14px);
+  transition:
+    transform var(--duration-base) var(--ease-out-quart),
+    opacity var(--duration-slow) var(--ease-out-quart);
+}
+
+.nav.is-entered {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nav.is-entered.is-hidden {
+  transform: translateY(-140%);
+}
+
+:root[data-reduced-motion] .nav {
+  opacity: 1;
+  transform: none;
+}
+
+.nav__mark {
+  grid-column: 1;
+  justify-self: start;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-fg);
+}
+
+.nav__mark span {
+  color: var(--color-accent);
+}
+
+/* The two independent nav groups (links, actions) as a centered pair —
+   deliberately not one continuous bar, so each reads as its own module. */
+.nav__center {
+  grid-column: 2;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.nav__pill {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-bg) 70%, transparent);
+  backdrop-filter: blur(14px);
+  transition:
+    border-color var(--duration-base) var(--ease-out-quart),
+    background-color var(--duration-base) var(--ease-out-quart);
+}
+
+.nav.is-scrolled .nav__pill {
+  border-color: var(--color-border-strong);
+  background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+}
+
+.nav__links {
+  display: none;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-2) var(--space-5);
+}
+
+@media (min-width: 860px) {
+  .nav__links {
+    display: flex;
+  }
+}
+
+.nav__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-pill);
+  transition:
+    color var(--duration-fast) var(--ease-out-quart),
+    background-color var(--duration-fast) var(--ease-out-quart);
+}
+
+.nav__link:hover {
+  color: var(--color-fg);
+}
+
+.nav__link.is-active {
+  color: var(--color-bg);
+  background: var(--color-fg);
+}
+
+.nav__link-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.nav__actions {
+  display: none;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .nav__actions {
+    display: flex;
+  }
+}
+
+.nav__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: var(--color-fg-muted);
+  transition:
+    color var(--duration-fast) var(--ease-out-quart),
+    background-color var(--duration-fast) var(--ease-out-quart);
+}
+
+.nav__icon:hover {
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.nav__toggle {
+  grid-column: 3;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-bg) 70%, transparent);
+  backdrop-filter: blur(14px);
+  color: var(--color-fg);
+  flex-shrink: 0;
+}
+
+@media (min-width: 860px) {
+  .nav__toggle {
+    display: none;
+  }
+}
+
+.nav__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-nav) - 1);
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--space-5);
+  padding: var(--container-padding-x);
+}
+
+.nav__overlay-link {
+  font-family: var(--font-display);
+  font-size: var(--font-size-2xl);
+  color: var(--color-fg);
+}
+
+.nav__overlay-link.is-active {
+  color: var(--color-accent);
+}
+
+.nav__overlay-icons {
+  display: flex;
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+  color: var(--color-fg-muted);
+}
+
+.nav__overlay-icons a {
+  transition: color var(--duration-fast) var(--ease-out-quart);
+}
+
+.nav__overlay-icons a:hover {
+  color: var(--color-accent);
+}

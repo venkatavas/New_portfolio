@@ -1,0 +1,181 @@
+.hpp {
+  position: relative;
+  height: 560vh;
+}
+
+.hpp__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hpp__layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: var(--space-8) var(--container-padding-x);
+}
+
+/* ---------- hero layer ---------- */
+
+.hpp__hero {
+  align-items: stretch;
+  justify-content: center;
+  padding-top: clamp(3.5rem, 3rem + 1.2vh, 4.5rem);
+  padding-bottom: var(--space-2);
+}
+
+/* The pinned hero drives the name's metallic band from scroll position
+   (see HeroProjectsPin.tsx) instead of the idle CSS keyframe the fallback
+   Hero.tsx uses, so the two don't fight over the same property. */
+.hpp__hero .hi__name-base {
+  animation: none;
+  background-position: 20% 50%;
+}
+
+.hpp__hero [data-hero-panel],
+.hpp__hero [data-hero-name],
+.hpp__hero [data-hero-identity],
+.hpp__hero [data-hero-module],
+.hpp__hero [data-hero-scroll] {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+/* ---------- project layer ---------- */
+
+.hpp__project {
+  visibility: hidden;
+  gap: var(--space-9);
+}
+
+.hpp__project-art {
+  flex: 0 0 42%;
+}
+
+.hpp__project-body {
+  flex: 1;
+  max-width: 46rem;
+}
+
+.hpp__project-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--font-size-3xl);
+  line-height: var(--line-height-tight);
+}
+
+.hpp__project-summary {
+  margin-top: var(--space-4);
+  color: var(--color-fg-muted);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-relaxed);
+  max-width: 42ch;
+}
+
+.hpp__project-points {
+  margin-top: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.hpp__project-points li {
+  position: relative;
+  padding-left: var(--space-5);
+  color: var(--color-fg-muted);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+}
+
+.hpp__project-points li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 6px;
+  height: 1px;
+  background: var(--color-border-strong);
+}
+
+.hpp__project-stack {
+  margin-top: var(--space-5);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.hpp__project-link {
+  margin-top: var(--space-5);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-fg);
+  padding-block: 13px;
+  margin-block: -13px;
+  border-bottom: 1px solid var(--color-border-strong);
+  transition:
+    color var(--duration-fast) var(--ease-out-quart),
+    border-color var(--duration-fast) var(--ease-out-quart);
+}
+
+.hpp__project-link:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* ---------- progress readout ---------- */
+
+.hpp__progress {
+  position: fixed;
+  right: var(--container-padding-x);
+  bottom: var(--space-6);
+  z-index: var(--z-nav);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-fg-muted);
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out-quart);
+  pointer-events: none;
+}
+
+.hpp__progress.is-visible {
+  opacity: 1;
+}
+
+.hpp__progress-label span {
+  color: var(--color-accent);
+}
+
+.hpp__progress-ticks {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.hpp__progress-tick {
+  width: 22px;
+  height: 2px;
+  background: var(--color-border-strong);
+  transition: background-color var(--duration-fast) var(--ease-out-quart);
+}
+
+.hpp__progress-tick.is-active {
+  background: var(--color-accent);
+}
+
+@media (max-width: 1023px) {
+  .hpp__progress {
+    display: none;
+  }
+}
