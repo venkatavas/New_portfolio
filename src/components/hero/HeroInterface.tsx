@@ -94,7 +94,7 @@ export function HeroInterface({ rootRef }: HeroInterfaceProps) {
 
       <div className="hi__modules" data-hero-module>
         <div className="hi__panel hi__module--about">
-          <span className="eyebrow">/about.me</span>
+          <span className="eyebrow">about.me</span>
           <p>
             I build systems that are reliable, maintainable, and useful, from APIs and backend
             services to full-stack applications.

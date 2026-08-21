@@ -26,6 +26,13 @@
 
 @media (max-width: 640px) {
   .hero {
+    /* Vertically centering (align-items: center, from the base rule)
+       reads fine on desktop, where the content block is tall relative to
+       the viewport — but on a phone the content is much shorter than
+       100svh, so centering pushes a large, equal, empty gap above AND
+       below it instead of anything looking intentional. Content starts
+       from the top on mobile instead. */
+    align-items: flex-start;
     padding-block: clamp(5.5rem, 5rem + 2vh, 7rem) var(--space-6);
   }
 }

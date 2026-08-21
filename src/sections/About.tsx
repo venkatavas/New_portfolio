@@ -84,7 +84,7 @@ export function About() {
           <RevealText as="h2" className="about__title">
             About me
           </RevealText>
-          <span className="about__label">/ How I work</span>
+          <span className="about__label">How I work</span>
         </div>
 
         <div className="about__statement-col">

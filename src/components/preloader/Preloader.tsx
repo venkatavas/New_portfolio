@@ -506,25 +506,35 @@ export function Preloader() {
           </>
         )}
 
-        <MagneticWrapper strength={0.25} className="preloader__enter-wrapper">
-          <button
-            type="button"
-            className="preloader__enter"
-            ref={enterRef}
-            onClick={handleEnter}
-            disabled={isExiting}
-            data-cursor="hover"
-            aria-label="Enter the site"
-          >
-            <span className="preloader__enter-label">Enter</span>
-            <span className="preloader__enter-label preloader__enter-label--hover" aria-hidden="true">
-              Initialize
-            </span>
-            <span className="preloader__enter-label preloader__enter-label--active" aria-hidden="true">
-              Activated
-            </span>
-          </button>
-        </MagneticWrapper>
+        {/* MagneticWrapper owns this span's transform (magnetic pull on
+            move, reset on leave) — centering must live on a separate
+            outer element, or MagneticWrapper's own reset
+            (translate3d(0,0,0)) periodically clobbers the
+            translate(-50%,-50%) centering the instant a pointerleave
+            fires (which a tap's touchend can trigger), snapping the
+            button from centered to corner-offset. Reported as "ENTER
+            moving aside when I try to click it" on mobile. */}
+        <div className="preloader__enter-wrapper">
+          <MagneticWrapper strength={0.25}>
+            <button
+              type="button"
+              className="preloader__enter"
+              ref={enterRef}
+              onClick={handleEnter}
+              disabled={isExiting}
+              data-cursor="hover"
+              aria-label="Enter the site"
+            >
+              <span className="preloader__enter-label">Enter</span>
+              <span className="preloader__enter-label preloader__enter-label--hover" aria-hidden="true">
+                Initialize
+              </span>
+              <span className="preloader__enter-label preloader__enter-label--active" aria-hidden="true">
+                Activated
+              </span>
+            </button>
+          </MagneticWrapper>
+        </div>
       </div>
     </div>
   )

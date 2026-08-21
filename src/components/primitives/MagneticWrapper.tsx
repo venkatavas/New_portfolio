@@ -16,7 +16,14 @@ export function MagneticWrapper({ children, strength = 0.3, className }: Magneti
   const disabled = isTouch || reducedMotion
 
   const handlePointerMove = (event: ReactPointerEvent<HTMLSpanElement>) => {
-    if (disabled || !ref.current) return
+    // Belt-and-suspenders beyond the `disabled` (device-level) guard below:
+    // checking the actual pointerType on this specific event is
+    // authoritative, where `isTouch` is a heuristic guess that can be wrong
+    // on some phones/in-app browsers. Without this, a touch tap could still
+    // fire a pointermove that yanks the element toward the touch point
+    // right as the user tries to tap it — reported as "ENTER moving aside
+    // when I try to click it" on mobile.
+    if (disabled || !ref.current || event.pointerType !== 'mouse') return
     const rect = ref.current.getBoundingClientRect()
     const relX = event.clientX - (rect.left + rect.width / 2)
     const relY = event.clientY - (rect.top + rect.height / 2)
