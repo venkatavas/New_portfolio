@@ -23,6 +23,18 @@ export function useLenis(disabled: boolean) {
     const handleRefresh = () => lenis.resize()
     ScrollTrigger.addEventListener('refresh', handleRefresh)
 
+    // ScrollTrigger.refresh() itself is deliberately deferred/coalesced by
+    // LazyMount (it's an expensive full recalculation of every trigger's
+    // position), so relying on its 'refresh' event alone leaves Lenis's own
+    // limit stale for that entire deferral window. Lenis's resize() is cheap
+    // by comparison — just re-measuring scrollHeight — so it gets its own
+    // fast, undeferred path: LazyMount dispatches this the instant a section
+    // mounts, confirmed via CDP-driven mobile+CPU-throttle testing to be the
+    // actual cause of scroll capping partway down under real load, not the
+    // heavier refresh cost.
+    const handleContentGrew = () => requestAnimationFrame(() => lenis.resize())
+    window.addEventListener('app:content-grew', handleContentGrew)
+
     const onTick = (time: number) => {
       lenis.raf(time * 1000)
     }
@@ -31,6 +43,7 @@ export function useLenis(disabled: boolean) {
 
     return () => {
       ScrollTrigger.removeEventListener('refresh', handleRefresh)
+      window.removeEventListener('app:content-grew', handleContentGrew)
       gsap.ticker.remove(onTick)
       lenis.destroy()
     }

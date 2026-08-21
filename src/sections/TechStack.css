@@ -190,9 +190,10 @@
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
   color: var(--color-fg-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  /* Wraps instead of truncating — at the 5-column desktop breakpoint,
+     columns are narrow enough that ellipsis was clipping names like
+     "React Native" and "Spring Security" down to unreadable fragments. */
+  line-height: var(--line-height-snug);
 }
 
 .stack__item-dot {

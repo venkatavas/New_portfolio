@@ -1,6 +1,33 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { ScrollTrigger } from '@/lib/gsap'
 
+// Module-level, shared by every LazyMount instance: ScrollTrigger.refresh()
+// synchronously recalculates every registered trigger's position (a real
+// layout cost that scales with how many sections/connectors exist), so
+// running it once per lazy-mounted section — right as the user scrolls
+// into each one — is the exact "stutters after each section" pattern.
+// Deferring to requestIdleCallback (rather than requestAnimationFrame,
+// which forces it into the very next paint while still actively
+// scrolling) lets the browser run it when the main thread actually has
+// slack, and the pending-handle guard coalesces several sections mounting
+// in quick succession into a single refresh instead of one each.
+let refreshIdleHandle: number | null = null
+let refreshTimeoutId: ReturnType<typeof setTimeout> | null = null
+
+function scheduleRefresh() {
+  if (refreshIdleHandle !== null || refreshTimeoutId !== null) return
+  const run = () => {
+    refreshIdleHandle = null
+    refreshTimeoutId = null
+    ScrollTrigger.refresh()
+  }
+  if (typeof requestIdleCallback === 'function') {
+    refreshIdleHandle = requestIdleCallback(run, { timeout: 500 })
+  } else {
+    refreshTimeoutId = setTimeout(run, 200)
+  }
+}
+
 interface LazyMountProps {
   children: ReactNode
   /** Same id as the section this wraps. In-page links (`href="#about"`,
@@ -45,11 +72,15 @@ export function LazyMount({ children, id, rootMargin = '800px 0px' }: LazyMountP
   // Every SectionConnector (and any section that mounted earlier) computed
   // its ScrollTrigger positions against a shorter document than this one
   // just became — refresh once the browser has actually laid out the new
-  // content, not synchronously on the same tick.
+  // content, not synchronously on the same tick. The expensive, cross-
+  // trigger recalculation is deferred/coalesced (scheduleRefresh), but
+  // Lenis needs to know the document got taller right away — otherwise its
+  // own cached scroll limit stays stale for that entire deferral window and
+  // scroll reads as capped/stuck partway down (see useLenis.ts).
   useEffect(() => {
     if (!shouldMount) return
-    const raf = requestAnimationFrame(() => ScrollTrigger.refresh())
-    return () => cancelAnimationFrame(raf)
+    window.dispatchEvent(new Event('app:content-grew'))
+    scheduleRefresh()
   }, [shouldMount])
 
   if (shouldMount) return children
