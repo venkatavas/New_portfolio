@@ -2,6 +2,7 @@
   position: fixed;
   inset: 0;
   z-index: var(--z-preloader);
+  overflow: hidden;
 }
 
 .preloader__backdrop {
@@ -64,12 +65,13 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 10;
 }
 
 .preloader__enter {
   position: relative;
-  width: 116px;
-  height: 116px;
+  width: 124px;
+  height: 124px;
   border-radius: 50%;
   border: 1px solid var(--color-border-strong);
   background: transparent;
@@ -96,7 +98,8 @@
   transition: opacity var(--duration-fast) var(--ease-out-quart);
 }
 
-.preloader__enter-label--hover {
+.preloader__enter-label--hover,
+.preloader__enter-label--active {
   position: absolute;
   inset: 0;
   display: flex;
@@ -116,6 +119,109 @@
   opacity: 1;
 }
 
+/* Cinematic sequence pieces — the robot, globe, and scan panel all anchor
+   off the same center point the ENTER node occupies, since the node is the
+   origin the whole sequence radiates from and eventually collapses back
+   into. Positioned here in CSS; every opacity/transform beat is driven by
+   the master timeline in Preloader.tsx. */
+.preloader-robot,
+.preloader-globe {
+  left: 50%;
+  top: 50%;
+}
+
+/* The globe grew to ~240px at its largest — the panel's offset has to
+   clear its radius (~120px) with room to spare, not sit against its old,
+   smaller footprint. */
+.scan-panel {
+  left: calc(50% + 155px);
+  top: 50%;
+}
+
+.preloader__status {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 110px);
+  /* Centering is owned by GSAP (xPercent), not a CSS transform — the
+     'collapse' phase animates `scale` on this element, which would
+     silently overwrite a stylesheet transform. Same fix as .scan-panel. */
+  min-height: 1.2em;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+  white-space: nowrap;
+}
+
+.preloader__packet {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 10px 1px color-mix(in srgb, var(--color-accent) 70%, transparent);
+}
+
+/* Detection connect-line: robot to node, a plain horizontal line whose
+   scaleX is driven by the timeline — same technique as
+   SectionConnector's line, just one-shot instead of scroll-scrubbed. */
+.preloader__connect-line {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 70px;
+  height: 1px;
+  opacity: 0;
+  transform-origin: right center;
+  background: linear-gradient(90deg, transparent, var(--color-accent));
+  margin-left: -95px;
+  z-index: 15;
+}
+
+.preloader__ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 124px;
+  height: 124px;
+  opacity: 0;
+  border-radius: 50%;
+  border: 1px solid var(--color-accent);
+  z-index: 15;
+}
+
+.preloader__ring--b {
+  border-color: var(--color-border-strong);
+}
+
+.preloader__particles {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 15;
+}
+
+.preloader__particle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 3px;
+  margin: -1.5px;
+  opacity: 0;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+@media (max-width: 900px) {
+  .scan-panel {
+    left: calc(50% + 135px);
+  }
+}
+
 @media (max-width: 640px) {
   .preloader__corner--overview {
     display: none;
@@ -124,5 +230,27 @@
   .preloader__enter {
     width: 92px;
     height: 92px;
+  }
+
+  .scan-panel {
+    left: 50%;
+    top: calc(50% + 130px);
+  }
+
+  .preloader__status {
+    top: calc(50% + 220px);
+  }
+
+  /* Both calibrated against the 124px desktop ENTER node — without an
+     override here they stay that size against the 92px mobile node,
+     rendering the contact rings oversized and the connect-line's tip
+     poking past the button's smaller edge. */
+  .preloader__ring {
+    width: 92px;
+    height: 92px;
+  }
+
+  .preloader__connect-line {
+    width: 40px;
   }
 }

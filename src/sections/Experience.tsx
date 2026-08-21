@@ -44,7 +44,7 @@ export function Experience() {
     <section id="experience" className="section container experience">
       <header className="experience__header">
         <div className="experience__title-row">
-          <span className="eyebrow experience__index">03 /</span>
+          <span className="eyebrow experience__index">03</span>
           <a
             className="experience__resume-link"
             href={links.resumePdf.url}

@@ -1,0 +1,142 @@
+.scan-panel {
+  position: absolute;
+  z-index: 1;
+  width: clamp(210px, 27vw, 270px);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-bg-elevated) 70%, transparent);
+  font-family: var(--font-mono);
+  opacity: 0;
+  will-change: transform, opacity;
+  /* Centering is done via GSAP's xPercent/yPercent (Preloader.tsx), not a
+     CSS transform here — GSAP writes the inline transform directly, which
+     would silently overwrite a translate() set in the stylesheet. */
+}
+
+.scan-panel__state {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  opacity: 0;
+}
+
+.scan-panel__state:not(:first-child) {
+  position: absolute;
+  /* .scan-panel's own padding already offsets the positioned-ancestor's
+     padding box, so 0 here aligns with where the normal-flow first child
+     (scanning) sits — not var(--space-4), which would double it up. */
+  inset: 0;
+}
+
+.scan-panel__label {
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
+
+.scan-panel__label--accent {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-accent);
+}
+
+.scan-panel__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-size: var(--font-size-xs);
+  color: var(--color-fg);
+}
+
+.scan-panel__bar {
+  position: relative;
+  height: 2px;
+  background: var(--color-border);
+  overflow: hidden;
+}
+
+.scan-panel__bar-fill {
+  position: absolute;
+  inset: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: var(--color-accent);
+}
+
+.scan-panel__percent {
+  align-self: flex-end;
+  font-size: var(--font-size-xs);
+  color: var(--color-accent);
+}
+
+/* A single bright line that sweeps once across the panel at scan
+   completion — the "system pauses and confirms" beat before PROFILE
+   FOUND. Driven entirely by the master timeline. */
+.scan-panel__scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  opacity: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-accent) 50%,
+    transparent
+  );
+  box-shadow: 0 0 8px 1px color-mix(in srgb, var(--color-accent) 60%, transparent);
+}
+
+.scan-panel__name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  color: var(--color-fg);
+  text-wrap: balance;
+}
+
+.scan-panel__word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.scan-panel__word:not(:last-child)::after {
+  content: '\00a0';
+}
+
+.scan-panel__letter {
+  display: inline-block;
+}
+
+.scan-panel__role,
+.scan-panel__status {
+  font-size: var(--font-size-xs);
+  color: var(--color-fg-muted);
+}
+
+.scan-panel__status em {
+  font-style: normal;
+  color: var(--color-accent);
+}
+
+.scan-panel__welcome {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  color: var(--color-fg);
+  /* Without this, "Welcome, Parsha Venkata Vas" wraps greedily —
+     "Welcome, Parsha Venkata" on line one, "Vas" orphaned alone on line
+     two. Balance picks an even split instead. */
+  text-wrap: balance;
+}
+
+@media (max-width: 640px) {
+  .scan-panel {
+    width: min(300px, 78vw);
+  }
+}

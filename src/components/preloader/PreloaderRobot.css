@@ -1,0 +1,27 @@
+/* Sized directly off the ENTER node's own diameter (height ≈ diameter ×
+   1.1), not viewport units — the robot's scale is meant to read relative
+   to the node it's interacting with, not to the viewport. Width follows
+   from the SVG's own aspect ratio (viewBox 80×112 → 0.7143). ENTER is
+   124px above the 640px breakpoint and 92px at/below it (Preloader.css). */
+.preloader-robot {
+  position: absolute;
+  width: 97px;
+  height: 136px;
+  opacity: 0;
+  z-index: 20;
+  will-change: transform, opacity;
+}
+
+/* The reaching arm rotates past the SVG's own viewBox width — without
+   this, the hand gets silently clipped at the viewBox edge mid-swing and
+   the "reach toward ENTER" gesture never actually becomes visible. */
+.preloader-robot svg {
+  overflow: visible;
+}
+
+@media (max-width: 640px) {
+  .preloader-robot {
+    width: 72px;
+    height: 101px;
+  }
+}

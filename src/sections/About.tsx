@@ -80,7 +80,7 @@ export function About() {
     <section id="about" className="section container about">
       <div className="about__grid">
         <div className="about__intro">
-          <span className="eyebrow about__index">01 /</span>
+          <span className="eyebrow about__index">01</span>
           <RevealText as="h2" className="about__title">
             About me
           </RevealText>

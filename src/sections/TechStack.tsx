@@ -126,7 +126,7 @@ export function TechStack() {
     <section id="stack" className="section container stack" ref={sectionRef}>
       <div className="stack__body">
         <aside className="stack__intro">
-          <span className="eyebrow stack__index">05 /</span>
+          <span className="eyebrow stack__index">05</span>
           <RevealText as="h2" className="stack__title">
             Stack
           </RevealText>

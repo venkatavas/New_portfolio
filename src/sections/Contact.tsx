@@ -81,7 +81,7 @@ export function Contact() {
   return (
     <section id="contact" className="section container contact">
       <header className="contact__header">
-        <span className="eyebrow contact__index">06 /</span>
+        <span className="eyebrow contact__index">06</span>
         <h2 className="contact__section-title">Contact</h2>
         <span className="contact__label">Get in touch</span>
       </header>
