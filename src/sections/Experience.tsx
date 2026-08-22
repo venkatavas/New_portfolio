@@ -16,9 +16,17 @@ export function Experience() {
   // The timeline line draws in as the section arrives, continuing the
   // connector's line-growth motif directly into an element that already
   // existed — no new visual system, just a scroll-scrubbed reveal of it.
+  // TRACE: as the line's own progress passes each row, that row's marker
+  // dot picks up a quiet accent tint — "the signal is passing through
+  // here," independent of and never overriding the click-selected (is-active)
+  // state, which stays the strong, deliberate treatment.
   useEffect(() => {
     if (reducedMotion || !listRef.current) return
     const ctx = gsap.context(() => {
+      const markers = Array.from(
+        listRef.current?.querySelectorAll<HTMLElement>('.xp__marker-dot') ?? [],
+      )
+
       gsap.fromTo(
         listRef.current,
         { '--xp-line-progress': 0 },
@@ -30,6 +38,12 @@ export function Experience() {
             start: 'top 85%',
             end: 'top 35%',
             scrub: 0.4,
+            onUpdate: (self) => {
+              markers.forEach((marker, i) => {
+                const threshold = markers.length > 1 ? i / (markers.length - 1) : 0
+                marker.classList.toggle('is-traced', self.progress >= threshold)
+              })
+            },
           },
         },
       )

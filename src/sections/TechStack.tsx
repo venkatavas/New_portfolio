@@ -3,7 +3,7 @@ import { ArrowRight, Box, Brain, BarChart3, Clapperboard, type LucideIcon } from
 import { RevealText } from '@/components/primitives/RevealText'
 import { useReducedMotionContext } from '@/components/system/ReducedMotionProvider'
 import { useIsTouchDevice } from '@/hooks/useIsTouchDevice'
-import { ScrollTrigger } from '@/lib/gsap'
+import { gsap, ScrollTrigger } from '@/lib/gsap'
 import { stackCategories, type SkillItem } from '@/data/stack'
 import { projects, experience } from '@/data/content'
 import './TechStack.css'
@@ -66,6 +66,45 @@ export function TechStack() {
       start: 'top 70%',
       once: true,
       onEnter: () => setPreviewActive(true),
+    })
+    return () => trigger.kill()
+  }, [reducedMotion])
+
+  // BOOT: the whole graph powers on left to right the first time it's
+  // scrolled into view — each category column staggered slightly after the
+  // last, each item within a column staggered slightly after the one
+  // before it — instead of the categories just being there when you arrive.
+  // Independent of the preview-callback effect above (that one only fires
+  // if PREVIEW_NAMES exists; this one always should).
+  useEffect(() => {
+    if (reducedMotion || !sectionRef.current) return
+    const trigger = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: 'top 75%',
+      once: true,
+      onEnter: () => {
+        const categories = sectionRef.current?.querySelectorAll<HTMLElement>('.stack__category') ?? []
+        categories.forEach((category, ci) => {
+          const items = category.querySelectorAll<HTMLElement>('.stack__item')
+          gsap.fromTo(
+            items,
+            { opacity: 0, y: 10 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              ease: 'power2.out',
+              stagger: 0.035,
+              delay: ci * 0.09,
+              // The existing hover interaction dims items via a CSS class
+              // (.is-dimmed, opacity: 0.4) — an inline opacity left behind
+              // by this tween would permanently outrank that class after
+              // boot finishes, so hand the property back to CSS once done.
+              clearProps: 'opacity,transform',
+            },
+          )
+        })
+      },
     })
     return () => trigger.kill()
   }, [reducedMotion])

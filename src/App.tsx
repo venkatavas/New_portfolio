@@ -74,13 +74,13 @@ function App() {
                 <TechStack />
               </Suspense>
             </LazyMount>
-            <SectionConnector />
+            <SectionConnector variant="converge" />
             <LazyMount id="education">
               <Suspense fallback={null}>
                 <Education />
               </Suspense>
             </LazyMount>
-            <SectionConnector />
+            <SectionConnector variant="converge" />
             <LazyMount id="contact">
               <Suspense fallback={null}>
                 <Contact />

@@ -131,6 +131,10 @@
     box-shadow var(--duration-fast) var(--ease-out-quart);
 }
 
+.xp__marker-dot.is-traced {
+  border-color: var(--color-accent-border);
+}
+
 .xp__row.is-active .xp__marker-dot {
   border-color: var(--color-accent);
   background: var(--color-accent);

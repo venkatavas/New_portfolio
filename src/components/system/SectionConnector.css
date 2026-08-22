@@ -33,6 +33,50 @@
   bottom: 2px;
 }
 
+/* converge variant: two extra lines fan in from the top corners, pivoting
+   from the same point the main line starts, so all three visually meet at
+   the single bottom node — "many things settling into one," reserved for
+   Stack->Education and Education->Contact only (see SectionConnector.tsx). */
+.section-connector--converge {
+  width: clamp(120px, 14vw, 200px);
+}
+
+.section-connector__fan {
+  /* Anchored at the bottom (matching the main line's and bottom node's own
+     position) so rotating around that point swings the TOP end outward —
+     the lines narrow down to the shared point, reading as convergence,
+     not a V widening away from a shared top like a first attempt did. */
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  width: 1px;
+  height: calc(100% - 12px);
+  background: var(--color-border-strong);
+  opacity: 0.5;
+}
+
+@media (max-width: 640px) {
+  .section-connector--converge {
+    width: auto;
+  }
+
+  .section-connector__fan {
+    display: none;
+  }
+}
+
+:root[data-reduced-motion] .section-connector__fan {
+  transform: rotate(var(--fan-angle, 0deg)) scaleY(1);
+}
+
+:root[data-reduced-motion] .section-connector__fan--left {
+  --fan-angle: -20deg;
+}
+
+:root[data-reduced-motion] .section-connector__fan--right {
+  --fan-angle: 20deg;
+}
+
 .section-connector__packet {
   position: absolute;
   top: 0;
@@ -44,6 +88,16 @@
   background: var(--color-accent);
   box-shadow: 0 0 6px 1px color-mix(in srgb, var(--color-accent) 60%, transparent);
   opacity: 0;
+  /* --packet-speed (0.4-1, set from ScrollTrigger's own getVelocity()) turns
+     scroll speed into a visible streak — GSAP only ever writes this
+     element's `top`, never `transform`, so this stays safe from the
+     inline-style clobbering that bit other elements earlier in the build. */
+  --packet-speed: 0.4;
+  transform: scaleY(calc(1 + (var(--packet-speed) - 0.4) * 2.2));
+  box-shadow:
+    0 0 6px 1px color-mix(in srgb, var(--color-accent) 60%, transparent),
+    0 calc(var(--packet-speed) * -5px) calc(var(--packet-speed) * 10px) -2px
+      color-mix(in srgb, var(--color-accent) 45%, transparent);
 }
 
 @media (max-width: 640px) {
